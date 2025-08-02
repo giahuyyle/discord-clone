@@ -26,6 +26,8 @@ import {
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
+import { FileUpload } from "../file-upload";
 
 
 // START OF CODE
@@ -40,7 +42,14 @@ const formSchema = z.object({
 });
 
 export const InitialModal = () => {
+    const [isMounted, setIsMounted] = useState(false);
+    
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
     const form = useForm({
+        resolver: zodResolver(formSchema),
         defaultValues: {
             name: "",
             imageUrl: ""
@@ -52,6 +61,10 @@ export const InitialModal = () => {
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         console.log(values);
     };
+
+    if (!isMounted) {
+        return null;
+    }
 
     return (
         <Dialog open>
@@ -71,7 +84,30 @@ export const InitialModal = () => {
                     >
                         <div className="space-y-8 px-6">
                             <div className="flex items-center justify-center text-center">
-                                TODO: Image Upload
+                            <FormField 
+                                control={form.control}
+                                name="imageUrl"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel
+                                            className="uppercase text-xs font-bold text-zinc-500 justify-center
+                                            mt-5 dark:text-secondary/70"
+                                        >
+                                            Server Image
+                                        </FormLabel>
+                                        <FormControl>
+                                            <FileUpload 
+                                                endpoint="serverImage"
+                                                value={field.value}
+                                                onChange={field.onChange}
+                                            />
+                                        </FormControl>
+
+                                        { /* display a message if the required field is missing */ }
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
                             </div>
 
                             <FormField 
