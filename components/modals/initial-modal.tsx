@@ -89,12 +89,6 @@ export const InitialModal = () => {
                                 name="imageUrl"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel
-                                            className="uppercase text-xs font-bold text-zinc-500 justify-center
-                                            mt-5 dark:text-secondary/70"
-                                        >
-                                            Server Image
-                                        </FormLabel>
                                         <FormControl>
                                             <FileUpload 
                                                 endpoint="serverImage"
