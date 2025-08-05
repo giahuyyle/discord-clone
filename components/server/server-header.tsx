@@ -49,6 +49,7 @@ export const ServerHeader = ({
 
                 {isAdmin && (
                     <DropdownMenuItem
+                        onClick={() => onOpen("editServer", { server })}
                         className="text-sm cursor-pointer px-3 py-2"
                     >
                         Server Settings
