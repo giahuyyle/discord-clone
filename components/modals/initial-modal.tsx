@@ -66,6 +66,8 @@ export const InitialModal = () => {
 
             // if POST request success, proceeds to the following:
             form.reset();
+
+            // router.refresh() does a soft-refresh, does not interrupt user experience
             router.refresh();
             window.location.reload();
         } catch (error) {

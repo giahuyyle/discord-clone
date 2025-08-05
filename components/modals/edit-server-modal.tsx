@@ -29,7 +29,7 @@ import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/file-upload";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal-store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 
 // START OF CODE
@@ -71,7 +71,7 @@ export const EditServerModal = () => {
         try {
             axios.patch(`/api/servers/${server?.id}`, values);
 
-            // if POST request success, proceeds to the following:
+            // if POST request succeeds, proceeds to the following:
             form.reset();
             router.refresh();
             onClose();
