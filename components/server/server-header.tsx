@@ -4,6 +4,7 @@ import { ServerWithMembersWithProfiles } from "@/types";
 import { MemberRole } from "@prisma/client";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { ChevronDown, DoorOpen, Plus, PlusCircle, Settings, Trash, User, UserPlus } from "lucide-react";
+import { useModal } from "@/hooks/use-modal-store";
 
 interface ServerHeaderProps {
     server: ServerWithMembersWithProfiles,
@@ -14,6 +15,8 @@ export const ServerHeader = ({
     server,
     role
 }: ServerHeaderProps) => {
+    const { onOpen } = useModal();
+
     const isAdmin = (role === MemberRole.ADMIN);
     const isMod = (isAdmin || role === MemberRole.MODERATOR);
 
@@ -36,6 +39,7 @@ export const ServerHeader = ({
             >
                 {isMod && (
                     <DropdownMenuItem
+                        onClick={() => onOpen("invite", { server })}
                         className="text-indigo-600 dark:text-indigo-400 text-sm cursor-pointer px-3 py-2"
                     >
                         Invite People
@@ -83,7 +87,7 @@ export const ServerHeader = ({
                     </DropdownMenuItem>
                 )}
 
-                {isAdmin && (
+                {!isAdmin && (
                     <DropdownMenuItem
                         className="text-sm cursor-pointer px-3 py-2 text-red-500"
                     >
