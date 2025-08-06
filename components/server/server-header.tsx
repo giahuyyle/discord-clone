@@ -70,6 +70,7 @@ export const ServerHeader = ({
                 {isMod && (
                     <DropdownMenuItem
                         className="text-sm cursor-pointer px-3 py-2"
+                        onClick={() => onOpen("createChannel", { server })}
                     >
                         Create Channel
                         <PlusCircle className="ml-auto" />
