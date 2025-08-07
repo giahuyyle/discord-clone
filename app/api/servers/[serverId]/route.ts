@@ -38,3 +38,34 @@ export async function PATCH(
         return new NextResponse("Internal Error", { status: 500 });
     }
 }
+
+export async function DELETE(
+    req: Request,
+    { params }: {
+        params: { serverId: string }
+    }
+) {
+    try {
+        const profile = await currentProfile();
+        if (!profile) {
+            return new NextResponse("Unauthorized", { status: 401 })
+        }
+
+        const { serverId } = await params; 
+
+        if (!serverId) return new NextResponse("Server ID missing", { status: 400 });
+
+        const server = await db.server.delete({
+            where: {
+                id: serverId,
+                profileId: profile.id,
+            },
+        });
+
+        return NextResponse.json(server);
+
+    } catch (error) {
+        console.log("DELETE_SERVER route error:", error);
+        return new NextResponse("Internal Error", { status: 500 });
+    }
+}

@@ -84,6 +84,7 @@ export const ServerHeader = ({
                 {isAdmin && (
                     <DropdownMenuItem
                         className="text-sm cursor-pointer px-3 py-2 text-red-500"
+                        onClick={() => onOpen("deleteServer", { server })}
                     >
                         Delete Server
                         <Trash className="ml-auto text-red-500" />
