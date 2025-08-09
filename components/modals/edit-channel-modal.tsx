@@ -55,48 +55,49 @@ const formSchema = z.object({
     type: z.enum(ChannelType),
 });
 
-export const CreateChannelModal = () => {
+export const EditChannelModal = () => {
     const { isOpen, onClose, type, data } = useModal();
     const router = useRouter();
-    const params = useParams();
-
-    const isModalOpen = isOpen &&  type === "createChannel";
-    const { channelType } = data;
+   
+    const isModalOpen = isOpen && type === "editChannel";
+    const { channel, server } = data;
 
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: "",
-            type: channelType || ChannelType.TEXT,
+            name: channel?.name || "",
+            type: channel?.type || ChannelType.TEXT
         }
     });
 
+    // A more robust way to populate the form
     useEffect(() => {
-        if (channelType) {
-            form.setValue("type", channelType);
-        } else {
-            form.setValue("type", ChannelType.TEXT);
+        if (channel) {
+            form.reset({
+                name: channel.name,
+                type: channel.type,
+            });
         }
-    }, [channelType, form]);
+    }, [channel, form.reset]); // form.reset is a stable function
 
     const isLoading = form.formState.isSubmitting;
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
             const url = qs.stringifyUrl({
-                url: "/api/channels",
+                url: `/api/channels/${channel?.id}`,
                 query: {
-                    serverId: params?.serverId
+                    serverId: server?.id,
                 }
             });
-            await axios.post(url, values);
+            await axios.patch(url, values);
 
             // if POST request success, proceeds to the following:
             form.reset();
             router.refresh();
             onClose();
         } catch (error) {
-            console.log("Create Channel error:", error);
+            console.log("Edit Channel error:", error);
         }
     };
 
@@ -110,7 +111,7 @@ export const CreateChannelModal = () => {
             <DialogContent className="bg-white text-black p-0 overflow-hidden">
                 <DialogHeader className="pt-8 px-6">
                     <DialogTitle className="text-2xl text-center font-bold">
-                        Create a New Channel
+                        Edit Channel
                     </DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
@@ -161,7 +162,7 @@ export const CreateChannelModal = () => {
                                         <Select
                                             disabled={isLoading}
                                             onValueChange={field.onChange}
-                                            defaultValue={field.value}
+                                            value={field.value}
                                         >
                                             <FormControl>
                                                 <SelectTrigger
@@ -192,7 +193,7 @@ export const CreateChannelModal = () => {
                         </div>
                         <DialogFooter className="bg-gray-100 px-6 py-4">
                             <Button variant="primary" disabled={isLoading} className="cursor-pointer">
-                                Create
+                                Edit
                             </Button>
                         </DialogFooter>
                     </form>
