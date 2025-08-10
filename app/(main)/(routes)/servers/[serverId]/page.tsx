@@ -3,9 +3,9 @@ import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 
 interface ServerIdPageProps {
-    params: {
+    params: Promise<{
         serverId: string;
-    }
+    }>
 };
 
 const ServerIdPage = async ({
@@ -13,11 +13,13 @@ const ServerIdPage = async ({
 }: ServerIdPageProps) => {
     const profile = await currentProfile();
 
+    const { serverId } = await params;
+
     if (!profile) return redirect("/sign-in");
 
     const server = await db.server.findUnique({
         where: {
-            id: params.serverId,
+            id: serverId,
             members: {
                 some: {
                     profileId: profile.id
@@ -40,7 +42,7 @@ const ServerIdPage = async ({
 
     if (initialChannel?.name !== "general") return null;
 
-    return redirect(`/servers/${params.serverId}/channels/${initialChannel?.id}`);
+    return redirect(`/servers/${serverId}/channels/${initialChannel?.id}`);
 }
  
 export default ServerIdPage;
