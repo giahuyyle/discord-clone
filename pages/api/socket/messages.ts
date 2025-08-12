@@ -71,7 +71,7 @@ export default async function handler(
         const message = await db.message.create({
             data: {
                 content,
-                fileUrl,
+                fileUrl: fileUrl.url,
                 channelId: channelId as string,
                 memberId: member.id
             },
@@ -87,6 +87,8 @@ export default async function handler(
         const channelKey = `chat:${channelId}:messages`;
 
         res?.socket?.server?.io?.emit(channelKey, message);
+
+        return res.status(200).json(message);
 
     } catch (error) {
         console.log("MESSAGES_POST error:", error);
