@@ -16,7 +16,7 @@ const InviteCodePage = async ({
     if (!profile) return redirect("/sign-in");
 
     // if no invite code, redirect to homepage
-    const inviteCode = await params.inviteCode;
+    const inviteCode = params.inviteCode;
     if (!inviteCode) return redirect("/");
 
     // if already a member, return
