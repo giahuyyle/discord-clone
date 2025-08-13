@@ -13,6 +13,9 @@ import {
     FormItem
 } from "@/components/ui/form";
 
+import { Button } from "@/components/ui/button";
+import { Send } from "lucide-react";
+
 import { Input } from "@/components/ui/input";
 import { Plus, Smile } from "lucide-react";
 import { useModal } from "@/hooks/use-modal-store";
@@ -98,11 +101,22 @@ export const ChatInput = ({
                                         {...field}
                                     />
                                     <div
-                                        className="absolute top-7 right-8"
+                                        className="absolute top-7 right-16"
                                     >
                                         <EmojiPicker
                                             onChange={(emoji: string) => field.onChange(`${field.value}${emoji}`)}
                                         />
+                                    </div>
+                                    <div className="absolute top-7 right-8">
+                                        <Button
+                                            type="submit"
+                                            variant="ghost"
+                                            size="icon"
+                                            disabled={isLoading || !field.value}
+                                            className="h-[25px] w-[25px] bg-transparent"
+                                        >
+                                            <Send className="text-zinc-500 dark:text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition cursor-pointer" />
+                                        </Button>
                                     </div>
                                 </div>
                             </FormControl>
