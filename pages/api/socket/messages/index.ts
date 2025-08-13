@@ -72,6 +72,7 @@ export default async function handler(
             data: {
                 content,
                 fileUrl: fileUrl?.url,
+                name: fileUrl?.name,
                 channelId: channelId as string,
                 memberId: member.id
             },
