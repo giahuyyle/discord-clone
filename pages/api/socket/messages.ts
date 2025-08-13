@@ -71,7 +71,7 @@ export default async function handler(
         const message = await db.message.create({
             data: {
                 content,
-                fileUrl: fileUrl.url,
+                fileUrl: fileUrl?.url,
                 channelId: channelId as string,
                 memberId: member.id
             },
