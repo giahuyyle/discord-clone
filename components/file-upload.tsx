@@ -55,7 +55,7 @@ export const FileUpload = ({
                     href={value}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="ml-2 text-sm text-indigo-500 dark:text-indigo-400 hover:underline truncate"
+                    className="ml-2 text-sm text-indigo-500 dark:text-indigo-400 hover:underline line-clamp-1"
                 >
                     {name}
                 </a>
