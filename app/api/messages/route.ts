@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 import { Message } from "@prisma/client";
 import { NextResponse } from "next/server";
 
-const MESSAGES_SEARCH_BATCH = 10; // search 10 messages per batch
+const MESSAGES_SEARCH_BATCH = 15; // search 15 messages per batch
 
 export async function GET(
     req: Request
@@ -69,11 +69,11 @@ export async function GET(
 
         return NextResponse.json({
             items: messages,
-            cursor: nextCursor
+            nextCursor: nextCursor
         });
 
     } catch (error) {
         console.log("MESSAGES GET error:", error);
-        return new NextResponse("Internal Eror", { status: 500 });
+        return new NextResponse("Internal Error", { status: 500 });
     }
 }
