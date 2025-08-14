@@ -69,7 +69,7 @@ const MemberIdPage = async ({
                 />
             )}
 
-            {isVideo && (
+            {!isVideo && (
                 <>
                     <ChatMessages 
                         member={currentMember}
