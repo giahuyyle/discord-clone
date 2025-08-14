@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 export async function PATCH(
     req: Request,
     { params }: {
-        params: { memberId: string }
+        params: Promise<{ memberId: string }>
     }
 ) {
     try {
@@ -14,10 +14,11 @@ export async function PATCH(
         const { role } = await req.json();
 
         const serverId = searchParams.get("serverId");
+        const memberId = (await params).memberId;
 
         if (!profile) return new NextResponse("Unauthorized", { status: 401 });
         if (!serverId) return new NextResponse("serverId missing", { status: 400 });
-        if (!params.memberId) return new NextResponse("memberId missing", { status: 400 });
+        if (!memberId) return new NextResponse("memberId missing", { status: 400 });
 
         const server = await db.server.update({
             where: {
@@ -28,7 +29,7 @@ export async function PATCH(
                 members: {
                     update: {
                         where: {
-                            id: params.memberId,
+                            id: memberId,
                             profileId: {
                                 not: profile.id,
                             }
@@ -62,9 +63,9 @@ export async function PATCH(
 export async function DELETE(
     req: Request,
     { params }: {
-        params: {
+        params: Promise<{
             memberId: string
-        }
+        }>
     }
 ) {
     try {
@@ -72,10 +73,11 @@ export async function DELETE(
         const { searchParams } = new URL(req.url);
 
         const serverId = searchParams.get("serverId");
+        const memberId = (await params).memberId;
 
         if (!profile) return new NextResponse("Unauthorized", { status: 401 });
         if (!serverId) return new NextResponse("serverId missing", { status: 400 });
-        if (!params.memberId) return new NextResponse("memberId missing", { status: 400 });
+        if (!memberId) return new NextResponse("memberId missing", { status: 400 });
 
         const server = await db.server.update({
             where: {
@@ -85,7 +87,7 @@ export async function DELETE(
             data: {
                 members: {
                     deleteMany: {
-                        id: params.memberId,
+                        id: memberId,
                         profileId: {
                             not: profile.id,
                         },

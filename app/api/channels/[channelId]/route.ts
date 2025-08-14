@@ -5,17 +5,18 @@ import { NextResponse } from "next/server";
 
 export async function DELETE(
     req: Request,
-    { params }: { params: {channelId: string}}
+    { params }: { params: Promise<{ channelId: string }> }
 ) {
     try {
         const profile = await currentProfile();
         const { searchParams } = new URL(req.url);
 
         const serverId = searchParams.get("serverId");
+        const channelId = (await params).channelId;
 
         if (!profile) return new NextResponse("Unauthorized", { status: 401 });
         if (!serverId) return new NextResponse("serverId missing", { status: 400 });
-        if (!params.channelId) return new NextResponse("channelId missing", { status: 400 });
+        if (!channelId) return new NextResponse("channelId missing", { status: 400 });
 
         const server = await db.server.update({
             where: {
@@ -32,7 +33,7 @@ export async function DELETE(
             data: {
                 channels: {
                     delete: {
-                        id: params.channelId,
+                        id: channelId,
                         name: {
                             not: "general"
                         }
@@ -51,12 +52,14 @@ export async function DELETE(
 
 export async function PATCH(
     req: Request,
-    { params }: { params: {channelId: string}}
+    { params }: { params: Promise<{channelId: string}>}
 ) {
     try {
         const profile = await currentProfile();
         const { name, type } = await req.json();
         const { searchParams } = new URL(req.url);
+
+        const channelId = (await params).channelId;
         
         const serverId = searchParams.get("serverId");
 
@@ -68,7 +71,7 @@ export async function PATCH(
             return new NextResponse("Server ID missing", { status: 400 });
         }
 
-        if (!params.channelId) {
+        if (!channelId) {
             return new NextResponse("Channel ID missing", { status: 400 });
         }
 
@@ -92,7 +95,7 @@ export async function PATCH(
                 channels: {
                     update: {
                         where: {
-                            id: params.channelId,
+                            id: channelId,
                             NOT: {
                                 name: "general",
                             },
