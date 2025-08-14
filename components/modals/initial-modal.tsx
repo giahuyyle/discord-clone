@@ -107,7 +107,7 @@ export const InitialModal = () => {
                                                 endpoint="serverImage"
                                                 value={field.value}
                                                 name="image.image"
-                                                onChange={field.onChange}
+                                                onChange={(file) => field.onChange(file?.url)}
                                             />
                                         </FormControl>
 

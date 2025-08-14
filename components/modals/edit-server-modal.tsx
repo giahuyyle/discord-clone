@@ -112,7 +112,7 @@ export const EditServerModal = () => {
                                             <FileUpload 
                                                 endpoint="serverImage"
                                                 value={field.value}
-                                                onChange={field.onChange}
+                                                onChange={(file) => field.onChange(file?.url)}
                                                 name="image.image"
                                             />
                                         </FormControl>
