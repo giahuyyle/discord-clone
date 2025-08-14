@@ -26,24 +26,27 @@ export const FileUpload = ({
     const fileType = name?.split(".").pop();
 
     if (value && fileType !== "pdf") {
-        return (
-            <div className="relative h-20 w-20 items-center">
-                <Image 
-                    fill
-                    src={value}
-                    alt="Upload"
-                    className="rounded-full"
-                />
-                <button
-                    onClick={() => onChange(undefined)}
-                    className="bg-rose-400 rounded-full text-white p-1
-                    absolute top-0 right-0 shadow-sm cursor-pointer"
-                    type="button"
-                >
-                    <X className="h-4 w-4" />
-                </button>
-            </div>
-        )
+        if (typeof value === "string") {
+            // If it's a string, treat it as a URL directly
+            return (
+                <div className="relative h-20 w-20 items-center">
+                    <Image 
+                        fill
+                        src={value}
+                        alt="Upload"
+                        className="rounded-full"
+                    />
+                    <button
+                        onClick={() => onChange(undefined)}
+                        className="bg-rose-400 rounded-full text-white p-1
+                        absolute top-0 right-0 shadow-sm cursor-pointer"
+                        type="button"
+                    >
+                        <X className="h-4 w-4" />
+                    </button>
+                </div>
+            );
+        } 
     }
     
     if (value && fileType === "pdf") {

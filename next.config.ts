@@ -6,7 +6,8 @@ const nextConfig: NextConfig = {
     domains: [
       "uploadthing.com",
       "ufs.sh",
-      "a757lr938m.ufs.sh"
+      "a757lr938m.ufs.sh",
+      "encrypted-tbn0.gstatic.com"
     ]
   }
 };
