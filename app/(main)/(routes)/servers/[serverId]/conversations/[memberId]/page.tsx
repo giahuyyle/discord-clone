@@ -12,9 +12,9 @@ interface MemberIdPageProp {
         memberId: string;
         serverId: string;
     }>,
-    searchParams: {
+    searchParams: Promise<{
         video?: boolean;
-    }
+    }>
 };
 
 const MemberIdPage = async ({
@@ -50,6 +50,8 @@ const MemberIdPage = async ({
     // see which one initiated the conversation, and then extracts who is the receiver
     const otherMember = memberOne.profileId === profile.id ? memberTwo : memberOne;
 
+    const isVideo = (await searchParams).video;
+
     return (  
         <div className="bg-white dark:bg-[#313338] flex flex-col h-full">
             <ChatHeader
@@ -59,7 +61,7 @@ const MemberIdPage = async ({
                 type="conversation"
             />
 
-            {searchParams.video && (
+            {isVideo && (
                 <MediaRoom 
                     chatId={conversation.id}
                     audio={true}
@@ -67,7 +69,7 @@ const MemberIdPage = async ({
                 />
             )}
 
-            {!searchParams.video && (
+            {isVideo && (
                 <>
                     <ChatMessages 
                         member={currentMember}

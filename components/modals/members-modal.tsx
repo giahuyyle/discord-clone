@@ -17,7 +17,7 @@ import { ServerWithMembersWithProfiles } from "@/types";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 import { UserAvatar } from "@/components/user-avatar"; 
-import { Check, Gavel, Loader, Loader2, MoreVertical, Shield, ShieldAlert, ShieldCheck, ShieldQuestion, User } from "lucide-react";
+import { Check, Gavel, Loader2, MoreVertical, ShieldAlert, ShieldCheck, ShieldQuestion, User } from "lucide-react";
 import { useState } from "react";
 
 import {

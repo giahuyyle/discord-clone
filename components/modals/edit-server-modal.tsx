@@ -113,6 +113,7 @@ export const EditServerModal = () => {
                                                 endpoint="serverImage"
                                                 value={field.value}
                                                 onChange={field.onChange}
+                                                name={null}
                                             />
                                         </FormControl>
 

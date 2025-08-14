@@ -3,9 +3,9 @@ import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 
 interface InviteCodePageProps {
-    params: {
+    params: Promise<{
         inviteCode: string;
-    }
+    }>
 }
 
 const InviteCodePage = async ({
@@ -16,7 +16,7 @@ const InviteCodePage = async ({
     if (!profile) return redirect("/sign-in");
 
     // if no invite code, redirect to homepage
-    const inviteCode = params.inviteCode;
+    const inviteCode = (await params).inviteCode;
     if (!inviteCode) return redirect("/");
 
     // if already a member, return

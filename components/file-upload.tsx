@@ -4,7 +4,6 @@ import { UploadDropzone } from "@/lib/uploadthing";
 
 import { FileIcon, X } from "lucide-react";
 import Image from "next/image";
-import { file } from "zod";
 
 type UploadedFile = {
     url: string;
@@ -14,7 +13,7 @@ type UploadedFile = {
 interface FileUploadProps {
     onChange: (file?: UploadedFile) => void;
     value: string;
-    name: string;
+    name: string | null;
     endpoint: "messageFile" | "serverImage";
 }
 

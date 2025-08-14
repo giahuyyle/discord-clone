@@ -106,6 +106,7 @@ export const InitialModal = () => {
                                             <FileUpload 
                                                 endpoint="serverImage"
                                                 value={field.value}
+                                                name={null}
                                                 onChange={field.onChange}
                                             />
                                         </FormControl>
