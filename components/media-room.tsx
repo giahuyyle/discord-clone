@@ -5,6 +5,7 @@ import { LiveKitRoom, VideoConference } from "@livekit/components-react";
 import "@livekit/components-styles";
 import { useUser } from "@clerk/nextjs";
 import { Loader2 } from "lucide-react";
+import { LiveTranscript } from "./live-transcript";
 
 interface MediaRoomProps {
     chatId: string;
@@ -57,8 +58,14 @@ export const MediaRoom = ({
             connect={true}
             video={video}
             audio={audio}
+            className="flex flex-col w-full"
         >
-            <VideoConference />
+            <VideoConference className="" />
+            <div className="h-auto mt-10">
+                <LiveTranscript />
+            </div>
+            
         </LiveKitRoom>
-    )
+       
+    );
 };
