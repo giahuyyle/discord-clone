@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { LiveKitRoom, VideoConference } from "@livekit/components-react";
+import { LiveKitRoom, VideoConference, useLocalParticipant } from "@livekit/components-react";
+import { Track } from "livekit-client";
 import "@livekit/components-styles";
 import { useUser } from "@clerk/nextjs";
 import { Loader2 } from "lucide-react";
@@ -20,6 +21,15 @@ export const MediaRoom = ({
 }: MediaRoomProps) => {
     const { user } = useUser();
     const [token, setToken] = useState("");
+
+    // 1. Get the local participant from the LiveKit room
+    const { localParticipant } = useLocalParticipant();
+
+    // 2. Find the microphone track from the participant's publications
+    const audioTrack = localParticipant.getTrackPublication(Track.Source.Microphone)?.track;
+    
+    // 3. Get the raw MediaStreamTrack, which we will use in the next step
+    const mediaStreamTrack = audioTrack?.mediaStreamTrack;
 
     useEffect(() => {
         if (!user?.firstName || !user?.lastName) return;
