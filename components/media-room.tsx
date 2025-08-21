@@ -164,10 +164,15 @@ export const MediaRoom = ({
 
   // This useEffect establishes the connection to the Python backend
   useEffect(() => {
-    // Connect to the Python server on port 8000
-    const socketInstance = ClientIO("http://localhost:8000", {
-        // No path needed, as we'll use the default '/socket.io/'
-        addTrailingSlash: false,
+    // Connect to the Python server on port 5000
+    const socketInstance = ClientIO("http://localhost:5000", {
+      // default path is /socket.io; include both transports so engine.io can
+      // fallback to polling if the server doesn't support websocket upgrades.
+      transports: ["websocket", "polling"],
+      reconnection: true,
+      reconnectionAttempts: 5,
+      // optional short timeouts during dev:
+      timeout: 20000,
     });
 
     socketInstance.on("connect", () => {
@@ -178,6 +183,14 @@ export const MediaRoom = ({
     socketInstance.on("disconnect", () => {
         console.log("❌ Disconnected from Python Socket.IO server");
         setSocket(null);
+    });
+
+    socketInstance.on("connect_error", (err: any) => {
+      console.error("Socket connect_error:", err);
+    });
+
+    socketInstance.on("connect_timeout", (timeout: any) => {
+      console.warn("Socket connect_timeout:", timeout);
     });
 
     return () => {
