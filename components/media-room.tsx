@@ -121,6 +121,10 @@ const MediaRoomContent = ({ chatId, socket }: { chatId: string, socket: Socket }
       session_id: string;
     }) => {
       if (data.session_id === socket.id) return;
+
+      // This log is crucial for debugging
+      console.log("🚀 Received 'room-transcription' event from backend:", data);
+
       const newEntry: TranscriptEntry = {
         name: data.user_name,
         text: data.transcription,
@@ -134,20 +138,39 @@ const MediaRoomContent = ({ chatId, socket }: { chatId: string, socket: Socket }
     };
   }, [socket]);
 
+  // This is the function we will modify
+  const toggleTranscription = () => {
+    if (!socket) return;
+    const newState = !isTranscribing;
+    setIsTranscribing(newState);
+    
+    // 🚀 ACTION: Emit the 'toggle-stt' event to the backend
+    socket.emit("toggle-stt", { enabled: newState });
+    console.log(`STT Toggled: ${newState ? 'ON' : 'OFF'}`);
+  };
+
+
   return (
-    <>
-      <VideoConference />
-      {isTranscribing && <LiveTranscript transcripts={transcriptionHistory} />}
+    // This new container will manage the layout
+    <div className="flex h-full w-full">
+      <div className="flex-grow"> {/* VideoConference will take up the available space */}
+        <VideoConference />
+      </div>
+      {isTranscribing && (
+        <div className="w-1/4 flex-shrink-0"> {/* Transcript will take 1/4 of the width */}
+          <LiveTranscript transcripts={transcriptionHistory} />
+        </div>
+      )}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
         <button
-          onClick={() => setIsTranscribing(!isTranscribing)}
+          onClick={toggleTranscription}
           className="px-4 py-2 rounded-full bg-indigo-500 hover:bg-indigo-600 transition text-white"
           disabled={!socket}
         >
           {isTranscribing ? "Stop Transcription" : "Start Transcription"}
         </button>
       </div>
-    </>
+    </div>
   );
 };
 
